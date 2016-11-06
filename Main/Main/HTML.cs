@@ -9,66 +9,68 @@ using System.Threading.Tasks;
 
 static class HTML
 {
-    public static string GetTitleTag(string html)
+    public static string GetTitleTag(HtmlDocument doc)
     {
-        HtmlDocument doc = new HtmlDocument();
-        doc.LoadHtml(html);
-
         var innerText = doc.DocumentNode.Descendants("title").Select(x => x.InnerText).FirstOrDefault();
-
         return innerText;
     }
 
-    public static string GetMetaTag(string html, string property)
+    public static string GetMetaTag(HtmlDocument doc, string lCaseProp, string uCaseProp)
     {
-        HtmlDocument doc = new HtmlDocument();
-        doc.LoadHtml(html);
         string data = string.Empty;
 
-        foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//meta"))
+        if (doc.DocumentNode.HasChildNodes)
         {
-            var desc = node.Attributes.AttributesWithName("property").Where(x => x.Value.Contains(property)).FirstOrDefault();
-            if( desc == null) { desc = node.Attributes.AttributesWithName("name").Where(x => x.Value.Contains(property)).FirstOrDefault(); }
+            var metaNodes = doc.DocumentNode.SelectNodes("//meta");
 
-            if (desc != null)
+            if (metaNodes.Count > 0)
             {
-                data = node.Attributes.AttributesWithName("content").FirstOrDefault().Value;
+                foreach (HtmlNode node in metaNodes)
+                {
+                    if (node.HasAttributes)
+                    {
+                        var desc = node.Attributes.AttributesWithName("property").Where(x => x.Value.Contains(lCaseProp) || x.Value.Contains(uCaseProp)).FirstOrDefault();
+                        if (desc == null) { desc = node.Attributes.AttributesWithName("name").Where(x => x.Value.Contains(lCaseProp) || x.Value.Contains(uCaseProp)).FirstOrDefault(); }
+                        if (desc == null) { desc = node.Attributes.AttributesWithName("Property").Where(x => x.Value.Contains(lCaseProp) || x.Value.Contains(uCaseProp)).FirstOrDefault(); }
+                        if (desc == null) { desc = node.Attributes.AttributesWithName("Name").Where(x => x.Value.Contains(lCaseProp) || x.Value.Contains(uCaseProp)).FirstOrDefault(); }
+
+                        if (desc != null)
+                        {
+                            data = node.Attributes.AttributesWithName("content").FirstOrDefault().Value + " " + data;
+                        }
+                    }
+                }
             }
         }
 
         return data;
     }
 
-    public static string GetHTML(string url)
+    public static HtmlDocument GetHTML(string url)
     {
-        string urlAddress = url;
-        string data = string.Empty;
+        var htmlWeb = new HtmlWeb();
+        htmlWeb.OverrideEncoding = Encoding.UTF8;
 
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-        if (response.StatusCode == HttpStatusCode.OK)
+        try
         {
-            Stream receiveStream = response.GetResponseStream();
-            StreamReader readStream = null;
-
-            if (response.CharacterSet == null)
-            {
-                readStream = new StreamReader(receiveStream);
-            }
-            else
-            {
-                readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-            }
-
-            data = readStream.ReadToEnd();
-
-            response.Close();
-            readStream.Close();
-
-
+            var doc = htmlWeb.Load(url);
+            return doc;
         }
-        return data;
+        catch (WebException ex)
+        {
+            try
+            {
+                htmlWeb.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36";
+                var doc = htmlWeb.Load(url);
+                return doc;
+            }
+            catch
+            {
+                Console.WriteLine(ex.Message);
+                return new HtmlDocument();
+            }
+        }
+
     }
 }
 

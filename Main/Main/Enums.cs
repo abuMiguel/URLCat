@@ -9,16 +9,19 @@ public class Enums
     public enum Categories
     {
         Unknown,
+        Adult,
         News,
+        Blog,
         Sports,
         Education,
         Finance,
         Entertainment,
         Technology,
-        Blog,
         Travel,
         Fashion,
-        Adult
+        Shopping,
+        Politics,
+        SearchEngine
     }
 }
 

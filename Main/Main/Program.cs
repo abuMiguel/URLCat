@@ -18,35 +18,36 @@ namespace URLCategorize
         static void Main(string[] args)
         {
             LoadKeywords();
+            do
+            {
+                while (!Console.KeyAvailable)
+                {
+                    Console.Write("Enter URL: ");
+                    var input = Console.ReadLine();
+                    input = FormatURL(input);
 
-            Console.Write("Enter URL: ");
-            var input = Console.ReadLine();
-            input = FormatURL(input);
+                    var html = HTML.GetHTML(input);
+                    var title = HTML.GetTitleTag(html);
+                    var metaDescription = HTML.GetMetaTag(html, "description", "Description");
+                    var metaKeywords = HTML.GetMetaTag(html, "keywords", "Keywords");
 
-            var html = HTML.GetHTML(input);
-            var title = HTML.GetTitleTag(html);
-            var metaDescription = HTML.GetMetaTag(html, "description");
-            var metaKeywords = HTML.GetMetaTag(html, "keywords");
+                    var titleMatchResults = GetMatchResults(title);
+                    var metaDescriptionMatchResults = GetMatchResults(metaDescription);
+                    var metaKeywordsMatchResults = GetMatchResults(metaKeywords);
 
-            var titleMatchResults = GetMatchResults(title);
-            var metaDescriptionMatchResults = GetMatchResults(metaDescription);
-            var metaKeywordsMatchResults = GetMatchResults(metaKeywords);
+                    var titleResult = titleMatchResults.FirstOrDefault(x => x.Value == titleMatchResults.Values.Max());
+                    var metaDescriptionResult = metaDescriptionMatchResults.FirstOrDefault(x => x.Value == metaDescriptionMatchResults.Values.Max());
+                    var metaKeywordsResult = metaKeywordsMatchResults.FirstOrDefault(x => x.Value == metaKeywordsMatchResults.Values.Max());
 
-            var titleResult = titleMatchResults.FirstOrDefault(x => x.Value == titleMatchResults.Values.Max());
-            var metaDescriptionResult = metaDescriptionMatchResults.FirstOrDefault(x => x.Value == metaDescriptionMatchResults.Values.Max());
-            var metaKeywordsResult = metaKeywordsMatchResults.FirstOrDefault(x => x.Value == metaKeywordsMatchResults.Values.Max());
+                    Console.WriteLine("title results: " + titleResult.Key.ToString() + " " + titleResult.Value.ToString());
+                    Console.WriteLine("meta description results: " + metaDescriptionResult.Key.ToString() + " " + metaDescriptionResult.Value.ToString());
+                    Console.WriteLine("meta keywords results: " + metaKeywordsResult.Key.ToString() + " " + metaKeywordsResult.Value.ToString());
+                    Console.WriteLine("");
 
-            //var total = new Dictionary<Categories, int>();
-            //total.Add(titleResult.Key, titleResult.Value);
-            //total.Add(metaDescriptionResult.Key, metaDescriptionResult.Value);
-            //total.Add(metaKeywordsResult.Key, metaKeywordsResult.Value);
+                }
+            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
-            Console.WriteLine("title results: " + titleResult.Key.ToString() + " " + titleResult.Value.ToString());
-            Console.WriteLine("meta property results: " + metaDescriptionResult.Key.ToString() + " " + metaDescriptionResult.Value.ToString());
-            Console.WriteLine("meta keywords results: " + metaKeywordsResult.Key.ToString() + " " + metaKeywordsResult.Value.ToString());
-            Console.WriteLine("");
- 
-            Console.ReadKey();
+            
         }
 
         static string FormatURL(string url)
@@ -95,6 +96,8 @@ namespace URLCategorize
             List<string> wordList = new List<string>();
             List<string> tokenizedWords = new List<string>();
 
+            if (string.IsNullOrEmpty(words)) { return wordList; }
+
             //split words by spaces
             wordList = words.Split().ToList();
 
@@ -130,6 +133,12 @@ namespace URLCategorize
             keywords.Add(new Keyword("football", Categories.Sports));
             keywords.Add(new Keyword("soccer", Categories.Sports));
             keywords.Add(new Keyword("hockey", Categories.Sports));
+            keywords.Add(new Keyword("golf", Categories.Sports));
+            keywords.Add(new Keyword("tennis", Categories.Sports));
+            keywords.Add(new Keyword("baseball", Categories.Sports));
+            keywords.Add(new Keyword("nba", Categories.Sports));
+            keywords.Add(new Keyword("nfl", Categories.Sports));
+            keywords.Add(new Keyword("mlb", Categories.Sports));
 
             keywords.Add(new Keyword("news", Categories.News));
 
@@ -155,19 +164,49 @@ namespace URLCategorize
             keywords.Add(new Keyword("episodes", Categories.Entertainment));
             keywords.Add(new Keyword("watch", Categories.Entertainment));
             keywords.Add(new Keyword("video", Categories.Entertainment));
+            keywords.Add(new Keyword("music", Categories.Entertainment));
+            keywords.Add(new Keyword("songs", Categories.Entertainment));
 
             keywords.Add(new Keyword("money", Categories.Finance));
             keywords.Add(new Keyword("finance", Categories.Finance));
             keywords.Add(new Keyword("finances", Categories.Finance));
+            keywords.Add(new Keyword("financial", Categories.Finance));
+            keywords.Add(new Keyword("stock", Categories.Finance));
+            keywords.Add(new Keyword("stocks", Categories.Finance));
+            keywords.Add(new Keyword("mortgage", Categories.Finance));
+            keywords.Add(new Keyword("loans", Categories.Finance));
+            keywords.Add(new Keyword("refinance", Categories.Finance));
+            keywords.Add(new Keyword("credit", Categories.Finance));
+            keywords.Add(new Keyword("investment", Categories.Finance));
+            keywords.Add(new Keyword("insurance", Categories.Finance));
+            keywords.Add(new Keyword("bank", Categories.Finance));
+            keywords.Add(new Keyword("banks", Categories.Finance));
+            keywords.Add(new Keyword("business", Categories.Finance));
+
 
             keywords.Add(new Keyword("blog", Categories.Blog));
             keywords.Add(new Keyword("blogs", Categories.Blog));
             keywords.Add(new Keyword("vlog", Categories.Blog));
+            keywords.Add(new Keyword("blogger", Categories.Blog));
+            keywords.Add(new Keyword("blogging", Categories.Blog));
+
+            keywords.Add(new Keyword("politics", Categories.Politics));
+            keywords.Add(new Keyword("republican", Categories.Politics));
+            keywords.Add(new Keyword("democrat", Categories.Politics));
+            keywords.Add(new Keyword("vote", Categories.Politics));
+            keywords.Add(new Keyword("voting", Categories.Politics));
+            keywords.Add(new Keyword("political", Categories.Politics));
+            keywords.Add(new Keyword("politician", Categories.Politics));
+
+            keywords.Add(new Keyword("search", Categories.SearchEngine));
+            keywords.Add(new Keyword("searching", Categories.SearchEngine));
 
             keywords.Add(new Keyword("travel", Categories.Travel));
 
             keywords.Add(new Keyword("fashion", Categories.Fashion));
             keywords.Add(new Keyword("hair", Categories.Fashion));
+
+            keywords.Add(new Keyword("shopping", Categories.Shopping));
 
             keywords.Add(new Keyword("porn", Categories.Adult));
             keywords.Add(new Keyword("xxx", Categories.Adult));
