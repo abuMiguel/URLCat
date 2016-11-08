@@ -14,10 +14,14 @@ namespace URLCategorize
     class Program
     {
         static List<Keyword> keywords = new List<Keyword>();
+        static List<Keyword> phrases = new List<Keyword>();
+        static List<Keyword> domains = new List<Keyword>();
 
         static void Main(string[] args)
         {
             LoadKeywords();
+            LoadPhrases();
+            LoadDomains();
             do
             {
                 while (!Console.KeyAvailable)
@@ -39,9 +43,12 @@ namespace URLCategorize
                     var metaDescriptionResult = metaDescriptionMatchResults.FirstOrDefault(x => x.Value == metaDescriptionMatchResults.Values.Max());
                     var metaKeywordsResult = metaKeywordsMatchResults.FirstOrDefault(x => x.Value == metaKeywordsMatchResults.Values.Max());
 
+                    var domainResult = GetDomainResult(input);
+
                     Console.WriteLine("title results: " + titleResult.Key.ToString() + " " + titleResult.Value.ToString());
                     Console.WriteLine("meta description results: " + metaDescriptionResult.Key.ToString() + " " + metaDescriptionResult.Value.ToString());
                     Console.WriteLine("meta keywords results: " + metaKeywordsResult.Key.ToString() + " " + metaKeywordsResult.Value.ToString());
+                    Console.WriteLine("domain result: " + domainResult.ToString());
                     Console.WriteLine("");
 
                 }
@@ -61,6 +68,19 @@ namespace URLCategorize
                 url = "http://" + url;
             }
             return url;
+        }
+
+        static Categories GetDomainResult(string url)
+        {
+            var domain = HTML.GetTopLevelDomain(url);
+            Categories cat = Categories.Unknown;
+
+            foreach(var d in domains)
+            {
+                if(domain == d.word) { cat = d.cat; }
+            }
+
+            return cat;
         }
         
         static Dictionary<Categories, int> GetMatchResults(string words)
@@ -87,6 +107,12 @@ namespace URLCategorize
             }
 
             //match phrases
+            foreach (var phrase in phrases)
+            {
+                var wordsLowerCase = words.ToLower();
+                
+                if (wordsLowerCase.Contains(phrase.word)) { results[phrase.cat]++; }
+            }
 
             return results;
         }
@@ -207,15 +233,34 @@ namespace URLCategorize
             keywords.Add(new Keyword("hair", Categories.Fashion));
 
             keywords.Add(new Keyword("shopping", Categories.Shopping));
+            keywords.Add(new Keyword("deals", Categories.Shopping));
+            keywords.Add(new Keyword("savings", Categories.Shopping));
+
+            keywords.Add(new Keyword("government", Categories.Government));
+            keywords.Add(new Keyword("agency", Categories.Government));
+            keywords.Add(new Keyword("agencies", Categories.Government));
 
             keywords.Add(new Keyword("porn", Categories.Adult));
             keywords.Add(new Keyword("xxx", Categories.Adult));
             keywords.Add(new Keyword("sex", Categories.Adult));
             keywords.Add(new Keyword("pussy", Categories.Adult));
             keywords.Add(new Keyword("porno", Categories.Adult));
+            keywords.Add(new Keyword("pornstar", Categories.Adult));
+            keywords.Add(new Keyword("pornstars", Categories.Adult));
             keywords.Add(new Keyword("fuck", Categories.Adult));
+            keywords.Add(new Keyword("pornvideos", Categories.Adult));
+            keywords.Add(new Keyword("pornvideo", Categories.Adult));
+        }
 
+        static void LoadPhrases()
+        {
+            phrases.Add(new Keyword("black friday", Categories.Shopping));
+        }
 
+        static void LoadDomains()
+        {
+            domains.Add(new Keyword("edu", Categories.Education));
+            domains.Add(new Keyword("gov", Categories.Government));
         }
     }
 

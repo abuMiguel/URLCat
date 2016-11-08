@@ -21,7 +21,8 @@ public class Enums
         Fashion,
         Shopping,
         Politics,
-        SearchEngine
+        SearchEngine,
+        Government
     }
 }
 

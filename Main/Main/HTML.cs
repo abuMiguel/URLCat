@@ -72,5 +72,15 @@ static class HTML
         }
 
     }
+
+    public static string GetTopLevelDomain(string url)
+    {
+        Uri website = new Uri(url);
+        var host = website.Host;
+        var index = host.LastIndexOf('.');
+        var domain = host.Substring(index + 1);
+
+        return domain;
+    }
 }
 
