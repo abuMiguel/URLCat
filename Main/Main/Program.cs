@@ -193,21 +193,21 @@ namespace URLCategorize
             keywords.Add(new Keyword("music", Categories.Entertainment));
             keywords.Add(new Keyword("songs", Categories.Entertainment));
 
-            keywords.Add(new Keyword("money", Categories.Finance));
-            keywords.Add(new Keyword("finance", Categories.Finance));
-            keywords.Add(new Keyword("finances", Categories.Finance));
-            keywords.Add(new Keyword("financial", Categories.Finance));
-            keywords.Add(new Keyword("stock", Categories.Finance));
-            keywords.Add(new Keyword("stocks", Categories.Finance));
-            keywords.Add(new Keyword("mortgage", Categories.Finance));
-            keywords.Add(new Keyword("loans", Categories.Finance));
-            keywords.Add(new Keyword("refinance", Categories.Finance));
-            keywords.Add(new Keyword("credit", Categories.Finance));
-            keywords.Add(new Keyword("investment", Categories.Finance));
-            keywords.Add(new Keyword("insurance", Categories.Finance));
-            keywords.Add(new Keyword("bank", Categories.Finance));
-            keywords.Add(new Keyword("banks", Categories.Finance));
-            keywords.Add(new Keyword("business", Categories.Finance));
+            keywords.Add(new Keyword("money", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("finance", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("finances", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("financial", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("stock", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("stocks", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("mortgage", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("loans", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("refinance", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("credit", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("investment", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("insurance", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("bank", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("banks", Categories.FinanceAndInvestment));
+            keywords.Add(new Keyword("business", Categories.FinanceAndInvestment));
 
 
             keywords.Add(new Keyword("blog", Categories.Blog));
@@ -229,8 +229,8 @@ namespace URLCategorize
 
             keywords.Add(new Keyword("travel", Categories.Travel));
 
-            keywords.Add(new Keyword("fashion", Categories.Fashion));
-            keywords.Add(new Keyword("hair", Categories.Fashion));
+            keywords.Add(new Keyword("fashion", Categories.FashionAndBeauty));
+            keywords.Add(new Keyword("hair", Categories.FashionAndBeauty));
 
             keywords.Add(new Keyword("shopping", Categories.Shopping));
             keywords.Add(new Keyword("deals", Categories.Shopping));
@@ -261,6 +261,8 @@ namespace URLCategorize
         {
             domains.Add(new Keyword("edu", Categories.Education));
             domains.Add(new Keyword("gov", Categories.Government));
+            domains.Add(new Keyword("mil", Categories.Military));
+            domains.Add(new Keyword("xxx", Categories.Adult));
         }
     }
 
