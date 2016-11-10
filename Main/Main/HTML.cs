@@ -7,16 +7,71 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-static class HTML
+public class HTML
 {
-    public static string GetTitleTag(HtmlDocument doc)
+    public HtmlDocument doc { get; set; } = new HtmlDocument();
+    public string url { get; set; } = string.Empty;
+    public string title { get; set; } = string.Empty;
+    public string metaDescription { get; set; } = string.Empty;
+    public string metaKeywords { get; set; } = string.Empty;
+
+
+    public HTML(string input)
+    {
+        this.url = input;
+        FormatURL();
+        HtmlWeb web = new HtmlWeb();
+        web.OverrideEncoding = Encoding.UTF8;
+
+        try
+        {
+            doc = web.Load(url);
+            this.title = GetTitleTag();
+            this.metaDescription = GetMetaTag("description");
+            this.metaKeywords = GetMetaTag("keywords");
+        }
+        catch (WebException ex)
+        {
+            try
+            {
+                web.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36";
+                doc = web.Load(url);
+                this.title = GetTitleTag();
+                this.metaDescription = GetMetaTag("description");
+                this.metaKeywords = GetMetaTag("keywords");
+            }
+            catch
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+
+    public HTML(string input, string html)
+    {
+        this.url = input;
+        FormatURL();
+
+        try
+        {
+            doc.LoadHtml(html);
+            this.title = GetTitleTag();
+            this.metaDescription = GetMetaTag("description");
+            this.metaKeywords = GetMetaTag("keywords");
+        }
+        catch { }
+    }
+
+    public string GetTitleTag()
     {
         var innerText = doc.DocumentNode.Descendants("title").Select(x => x.InnerText).FirstOrDefault();
         return innerText;
     }
 
-    public static string GetMetaTag(HtmlDocument doc, string lCaseProp, string uCaseProp)
+    public string GetMetaTag(string property)
     {
+        string lCaseProp = property;
+        string uCaseProp = property[0].ToString().ToUpper() + property.Remove(0,1);
         string data = string.Empty;
 
         if (doc.DocumentNode.HasChildNodes)
@@ -46,41 +101,23 @@ static class HTML
         return data;
     }
 
-    public static HtmlDocument GetHTML(string url)
+    public string GetTopLevelDomain()
     {
-        var htmlWeb = new HtmlWeb();
-        htmlWeb.OverrideEncoding = Encoding.UTF8;
-
-        try
-        {
-            var doc = htmlWeb.Load(url);
-            return doc;
-        }
-        catch (WebException ex)
-        {
-            try
-            {
-                htmlWeb.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36";
-                var doc = htmlWeb.Load(url);
-                return doc;
-            }
-            catch
-            {
-                Console.WriteLine(ex.Message);
-                return new HtmlDocument();
-            }
-        }
-
-    }
-
-    public static string GetTopLevelDomain(string url)
-    {
-        Uri website = new Uri(url);
+        Uri website = new Uri(this.url);
         var host = website.Host;
         var index = host.LastIndexOf('.');
         var domain = host.Substring(index + 1);
 
         return domain;
+    }
+
+    private void FormatURL()
+    {
+        if (!this.url.StartsWith("https://") && !this.url.StartsWith("http://"))
+        { 
+            this.url = "http://" + this.url;
+        }
+
     }
 }
 
