@@ -12,7 +12,11 @@ namespace Main
         public Dictionary<Categories, int> titleMatches { get; set; } = new Dictionary<Categories, int>();
         public Dictionary<Categories, int> metaDescriptionMatches { get; set; } = new Dictionary<Categories, int>();
         public Dictionary<Categories, int> metaKeywordsMatches { get; set; } = new Dictionary<Categories, int>();
+        public KeyValuePair<Categories, int> titleTopResult { get; set; } = new KeyValuePair<Categories, int>();
+        public KeyValuePair<Categories, int> metaDescriptionTopResult { get; set; } = new KeyValuePair<Categories, int>();
+        public KeyValuePair<Categories, int> metaKeywordsTopResult { get; set; } = new KeyValuePair<Categories, int>();
         public Categories domainResult { get; set; } = Categories.Unknown;
+        public Categories urlResult { get; set; } = Categories.Unknown;
 
         public Result(HTML html, Data data)
         {
@@ -20,6 +24,15 @@ namespace Main
             this.metaDescriptionMatches = GetMatchResults(html.metaDescription, data);
             this.metaKeywordsMatches = GetMatchResults(html.metaKeywords, data);
             this.domainResult = GetDomainResult(html, data.domains);
+            this.urlResult = GetURLResult(html, data.urlKeywords);
+            this.SetTopResults(html, data);
+        }
+
+        private void SetTopResults(HTML html, Data data)
+        {
+            this.titleTopResult = this.titleMatches.FirstOrDefault(x => x.Value == this.titleMatches.Values.Max());
+            this.metaDescriptionTopResult = this.metaDescriptionMatches.FirstOrDefault(x => x.Value == this.metaDescriptionMatches.Values.Max());
+            this.metaKeywordsTopResult = this.metaKeywordsMatches.FirstOrDefault(x => x.Value == this.metaKeywordsMatches.Values.Max());
         }
 
         public Categories GetDomainResult(HTML html, List<Keyword> domains)
@@ -30,6 +43,19 @@ namespace Main
             foreach (var d in domains)
             {
                 if (domain == d.word) { cat = d.cat; }
+            }
+
+            return cat;
+        }
+
+        public Categories GetURLResult(HTML html, List<Keyword> urlKeywords)
+        {
+            var url = html.url;
+            Categories cat = Categories.Unknown;
+
+            foreach (var w in urlKeywords)
+            {
+                if (url.Contains(w.word)) { cat = w.cat; }
             }
 
             return cat;
@@ -101,6 +127,17 @@ namespace Main
             }
 
             return tokenizedWords;
+        }
+
+        public void WriteTopResults()
+        {
+            //write results
+            Console.WriteLine("title results: " + this.titleTopResult.Key.ToString() + " " + this.titleTopResult.Value.ToString());
+            Console.WriteLine("meta description results: " + this.metaDescriptionTopResult.Key.ToString() + " " + this.metaDescriptionTopResult.Value.ToString());
+            Console.WriteLine("meta keywords results: " + this.metaKeywordsTopResult.Key.ToString() + " " + this.metaKeywordsTopResult.Value.ToString());
+            Console.WriteLine("domain result: " + this.domainResult.ToString());
+            Console.WriteLine("url result: " + this.urlResult.ToString());
+            Console.WriteLine("");
         }
     }
 }
