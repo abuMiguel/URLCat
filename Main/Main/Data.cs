@@ -16,14 +16,14 @@ namespace Main
 
         public Data()
         {
-            LoadUrlKeywords();
             LoadKeywords();
             LoadPhrases();
             LoadDomains();
         }
 
-        private void LoadUrlKeywords()
+        private void LoadKeywords()
         {
+
             urlKeywords.Add(new Keyword(".ads.", Categories.Advertisements));
             urlKeywords.Add(new Keyword(".ad.", Categories.Advertisements));
             urlKeywords.Add(new Keyword("//ads", Categories.Advertisements));
@@ -78,12 +78,10 @@ namespace Main
             urlKeywords.Add(new Keyword(".png", Categories.WebImages));
             urlKeywords.Add(new Keyword(".gif", Categories.WebImages));
 
+            //***************
 
-        }
-
-        private void LoadKeywords()
-        {
-
+            keywords.Add(new Keyword("stumbleupon", Categories.SocialNetworking));
+            keywords.Add(new Keyword("pinterest", Categories.SocialNetworking));
 
             keywords.Add(new Keyword("translate", Categories.WebsiteTranslation));
             keywords.Add(new Keyword("translation", Categories.WebsiteTranslation));
