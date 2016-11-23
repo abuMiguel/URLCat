@@ -16,16 +16,16 @@ public class HTML
     public string metaKeywords { get; set; } = string.Empty;
 
 
-    public HTML(string input)
+    public HTML(string url)
     {
-        this.url = input;
+        this.url = url;
         FormatURL();
         HtmlWeb web = new HtmlWeb();
         web.OverrideEncoding = Encoding.UTF8;
 
         try
         {
-            doc = web.Load(url);
+            doc = web.Load(this.url);
             this.title = GetTitleTag();
             this.metaDescription = GetMetaTag("description");
             this.metaKeywords = GetMetaTag("keywords");
@@ -35,7 +35,7 @@ public class HTML
             try
             {
                 web.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36";
-                doc = web.Load(url);
+                doc = web.Load(this.url);
                 this.title = GetTitleTag();
                 this.metaDescription = GetMetaTag("description");
                 this.metaKeywords = GetMetaTag("keywords");
@@ -47,9 +47,9 @@ public class HTML
         }
     }
 
-    public HTML(string input, string html)
+    public HTML(string url, string html)
     {
-        this.url = input;
+        this.url = url;
         FormatURL();
 
         try

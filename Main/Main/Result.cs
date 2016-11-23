@@ -4,6 +4,7 @@ using System.Linq;
 using static Enums;
 using static Main.Data;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Main
 {
@@ -20,6 +21,9 @@ namespace Main
 
         public Result(HTML html, Data data)
         {
+            bool camelTitle = IsCamelCase(html.title);
+            html.title = camelTitle ? SplitCamelCase(html.title) : html.title;
+
             this.titleMatches = GetMatchResults(html.title, data);
             this.metaDescriptionMatches = GetMatchResults(html.metaDescription, data);
             this.metaKeywordsMatches = GetMatchResults(html.metaKeywords, data);
@@ -105,7 +109,7 @@ namespace Main
             //split words by spaces
             wordList = words.Split().ToList();
 
-            //get rid of commas
+            //get rid of ending punctuation
             foreach (var word in wordList)
             {
                 if (word.EndsWith(","))
@@ -127,6 +131,18 @@ namespace Main
             }
 
             return tokenizedWords;
+        }
+
+        public static bool IsCamelCase(string input)
+        {
+            Regex regex = new Regex("[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*");
+            return regex.IsMatch(input);
+        }
+
+        public static string SplitCamelCase(string input)
+        {
+            var output = Regex.Replace(input, "([a-z](?=[A-Z0-9])|[A-Z](?=[A-Z][a-z]))", "$1 ");
+            return output;
         }
 
         public void WriteTopResults()
