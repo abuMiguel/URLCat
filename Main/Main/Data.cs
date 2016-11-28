@@ -175,7 +175,6 @@ namespace Main
             keywords.Add(new Keyword("technology", Categories.InformationTechnology));
             keywords.Add(new Keyword("tech", Categories.InformationTechnology));
             keywords.Add(new Keyword("software", Categories.InformationTechnology));
-            keywords.Add(new Keyword("phone", Categories.InformationTechnology));
             keywords.Add(new Keyword("smartphone", Categories.InformationTechnology));
             keywords.Add(new Keyword("mobile", Categories.InformationTechnology));
             keywords.Add(new Keyword("app", Categories.InformationTechnology));
@@ -183,6 +182,8 @@ namespace Main
             keywords.Add(new Keyword("powershell", Categories.InformationTechnology));
             keywords.Add(new Keyword("linux", Categories.InformationTechnology));
             keywords.Add(new Keyword("microsoft", Categories.InformationTechnology));
+
+            keywords.Add(new Keyword("voip", Categories.InternetTelephony));
 
             keywords.Add(new Keyword("education", Categories.Education));
             keywords.Add(new Keyword("educational", Categories.Education));
@@ -418,6 +419,8 @@ namespace Main
 
             phrases.Add(new Keyword("3d printing", Categories.InformationTechnology));
 
+            phrases.Add(new Keyword("internet phone", Categories.InternetTelephony));
+
             phrases.Add(new Keyword("download music", Categories.MP3AndAudioDownloadServices));
             phrases.Add(new Keyword("download songs", Categories.MP3AndAudioDownloadServices));
             phrases.Add(new Keyword("download mp3s", Categories.MP3AndAudioDownloadServices));
@@ -433,13 +436,13 @@ namespace Main
             phrases.Add(new Keyword("bee keeping", Categories.Hobbies));
             phrases.Add(new Keyword("base jumping", Categories.Hobbies));
             phrases.Add(new Keyword("bird watching", Categories.Hobbies));
-            keywords.Add(new Keyword("radio control", Categories.Hobbies));
-            keywords.Add(new Keyword("remote control", Categories.Hobbies));
-            keywords.Add(new Keyword("rc cars", Categories.Hobbies));
-            keywords.Add(new Keyword("rc planes", Categories.Hobbies));
-            keywords.Add(new Keyword("rc helicopters", Categories.Hobbies));
-            keywords.Add(new Keyword("rc car", Categories.Hobbies));
-            keywords.Add(new Keyword("rc parts", Categories.Hobbies));
+            phrases.Add(new Keyword("radio control", Categories.Hobbies));
+            phrases.Add(new Keyword("remote control", Categories.Hobbies));
+            phrases.Add(new Keyword("rc cars", Categories.Hobbies));
+            phrases.Add(new Keyword("rc planes", Categories.Hobbies));
+            phrases.Add(new Keyword("rc helicopters", Categories.Hobbies));
+            phrases.Add(new Keyword("rc car", Categories.Hobbies));
+            phrases.Add(new Keyword("rc parts", Categories.Hobbies));
 
 
             phrases.Add(new Keyword("horseback riding", Categories.Sports));
