@@ -25,7 +25,7 @@ namespace URLCategorize
                     var data = new Data();
                     var html = new HTML(input);
                     var results = new Result(html, data);
-                    results.WriteTopResults();
+                    results.WriteResults();
                 }
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
             

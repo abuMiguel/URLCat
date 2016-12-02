@@ -68,6 +68,7 @@ namespace Main
         public Dictionary<Categories, int> GetMatchResults(string words, Data data)
         {
             Dictionary<Categories, int> results = new Dictionary<Categories, int>();
+            if (string.IsNullOrEmpty(words)) { return results; }
 
             foreach (Categories cat in Enum.GetValues(typeof(Categories)))
             {
@@ -104,7 +105,7 @@ namespace Main
             List<string> wordList = new List<string>();
             List<string> tokenizedWords = new List<string>();
 
-            if (string.IsNullOrEmpty(words)) { return wordList; }
+            if (string.IsNullOrEmpty(words)) { return tokenizedWords; }
 
             //split words by spaces
             wordList = words.Split().ToList();
@@ -135,6 +136,7 @@ namespace Main
 
         public static bool IsCamelCase(string input)
         {
+            if (string.IsNullOrEmpty(input)) { return false; }
             Regex regex = new Regex("[A-Z]([A-Z0-9]*[a-z][a-z0-9]*[A-Z]|[a-z0-9]*[A-Z][A-Z0-9]*[a-z])[A-Za-z0-9]*");
             return regex.IsMatch(input);
         }
@@ -145,14 +147,35 @@ namespace Main
             return output;
         }
 
-        public void WriteTopResults()
+        public void WriteResults()
         {
             //write results
+            Console.WriteLine("**Top Results**");
             Console.WriteLine("title results: " + this.titleTopResult.Key.ToString() + " " + this.titleTopResult.Value.ToString());
             Console.WriteLine("meta description results: " + this.metaDescriptionTopResult.Key.ToString() + " " + this.metaDescriptionTopResult.Value.ToString());
             Console.WriteLine("meta keywords results: " + this.metaKeywordsTopResult.Key.ToString() + " " + this.metaKeywordsTopResult.Value.ToString());
             Console.WriteLine("domain result: " + this.domainResult.ToString());
             Console.WriteLine("url result: " + this.urlResult.ToString());
+            Console.WriteLine("");
+
+            Console.WriteLine("**All Results**");
+            Console.WriteLine("Title Matches");
+            foreach(var match in this.titleMatches.Where(x => x.Value > 0))
+            {
+                Console.WriteLine(match.Key.ToString() + " - " + match.Value.ToString());
+            }
+            Console.WriteLine();
+            Console.WriteLine("Meta Description Matches");
+            foreach (var match in this.metaDescriptionMatches.Where(x => x.Value > 0))
+            {
+                Console.WriteLine(match.Key.ToString() + " - " + match.Value.ToString());
+            }
+            Console.WriteLine();
+            Console.WriteLine("Meta Keywords Matches");
+            foreach (var match in this.metaKeywordsMatches.Where(x => x.Value > 0))
+            {
+                Console.WriteLine(match.Key.ToString() + " - " + match.Value.ToString());
+            }
             Console.WriteLine("");
         }
     }

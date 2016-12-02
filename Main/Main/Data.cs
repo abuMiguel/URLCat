@@ -182,6 +182,7 @@ namespace Main
             keywords.Add(new Keyword("powershell", Categories.InformationTechnology));
             keywords.Add(new Keyword("linux", Categories.InformationTechnology));
             keywords.Add(new Keyword("microsoft", Categories.InformationTechnology));
+            keywords.Add(new Keyword("programmers", Categories.InformationTechnology));
 
             keywords.Add(new Keyword("voip", Categories.InternetTelephony));
 
@@ -444,6 +445,9 @@ namespace Main
             phrases.Add(new Keyword("rc car", Categories.Hobbies));
             phrases.Add(new Keyword("rc parts", Categories.Hobbies));
 
+            phrases.Add(new Keyword("registering domain names", Categories.WebHosting));
+            phrases.Add(new Keyword("domain name hosting", Categories.WebHosting));
+            phrases.Add(new Keyword("domain name registrar", Categories.WebHosting));
 
             phrases.Add(new Keyword("horseback riding", Categories.Sports));
             phrases.Add(new Keyword("rock climbing", Categories.Sports));
